@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DAL
 {
     /// <summary>
-    /// validation car type model
+    /// validation car type model  
     /// </summary>
     [MetadataType(typeof(CarTypeValidator))]
     public partial class CarType
