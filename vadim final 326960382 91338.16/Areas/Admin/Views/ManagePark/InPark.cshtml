@@ -1,0 +1,167 @@
+﻿@*Search car form*@
+@model BL.SearchCarsModel
+@using PagedList.Mvc;
+
+@*page title*@
+@{
+    ViewBag.Title = "Admin";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+@*items list for dropdown list*@
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "Manual",
+        Value = "Manual"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Automat",
+        Value = "Automat",
+        Selected = true
+    });
+
+}
+@*Search form*@
+<div class="container">
+    @using (Html.BeginForm("InPark", "ManagePark", FormMethod.Get))
+    {
+        <div class="row">
+            <div class="col-md-2">
+                <h4>
+                    <span class="label label-default">Manufacturer</span>
+                </h4>
+                <div class="form-group">
+                    @Html.DropDownListFor(model => model.Manufacturer, (SelectList)ViewBag.type, "", new { @class = "form-control", placeholder = "Manufacturer" })
+                    @Html.ValidationMessageFor(model => model.Manufacturer)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h4>
+                    <span class="label label-default">Model</span>
+                </h4>
+                <div class="form-group">
+                    <select id="Model" name="Model" class="form-control">
+                        <option value=""> </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h4>
+                    <span class="label label-default">Geer</span>
+                </h4>
+                <div class="form-group input-group-sm">
+                    @Html.DropDownListFor(u => u.Geer, listItems, "All", new { @class = "form-control", placeholder = "Geer" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h4>
+                    <span class="label label-default">Year Manufacture</span>
+                </h4>
+                <div class="form-group ">
+                    <div class='input-group date'>
+                        <input type='text' class="form-control " name="YearManufacture" autocomplete="off" placeholder="@DateTime.Now" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <h4>
+                    <span class="label label-default">Daily</span>
+                </h4>
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.DailyCost, new { @class = "form-control", placeholder = "Price" })
+                </div>
+            </div>
+            <div class="col-md-1">
+                <h4>
+                    <span class="label label-default">Delay</span>
+                </h4>
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.DelayCost, new { @class = "form-control", placeholder = "Price" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                <input name="SearchButton1" type="submit" value="Search" class="btn btn-default " />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10">
+                @*<h4>
+                        <span class="label label-primary">Search by free text</span>
+                    </h4>*@
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.FreeText, new { @class = "form-control", placeholder = "Search by free text" })
+                    @Html.ValidationMessageFor(model => model.FreeText)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <a href="../managepark/newtype" class="btn btn-default  add-type">New</a>
+            </div>
+        </div>
+    }
+    @if (TempData["added"] != null)
+    {
+        <div class="row">
+            <div class="col-md-8">
+                <div class="alert alert-success alert-dismissable fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Success!</strong> @TempData["added"] was added to park!!!
+                </div>
+            </div>
+        </div>
+    }
+
+    @Html.ValidationSummary(false)
+    @if (Model.SearchResults != null && Model.SearchResults.Count > 0)
+            {
+        <div class="row">
+            <table class="table table-striped">
+                <tr>
+                    <th><h4><span class="label label-default">Manufacturer</span></h4></th>   
+                    <th><h4><span class="label label-default">Model</span></h4></th>
+                    <th><h4><span class="label label-default">DailyCost</span></h4></th>
+                    <th><h4><span class="label label-default">DelayCost</span></h4></th>
+                    <th><h4><span class="label label-default">Geer</span></h4></th>
+                    <th><h4><span class="label label-default">Year</span></h4></th>
+                    <th><h4><span class="label label-default">Send to Branch</span></h4></th>
+                </tr>
+                @foreach (var car in Model.SearchResults)
+                {
+                    <tr>
+                        <td>@car.Manufacturer</td>
+                        <td>@car.Model</td>
+                        <td>@car.DailyCost</td>
+                        <td>@car.DelayCost</td>
+                        <td>@car.Geer</td>
+                        <td>@car.YearManufacture.Year</td>
+                        <td><a href="../managepark/send/?value=@car.Model" class="btn btn-success send-b">Send</a></td>
+                    </tr>
+                }
+            </table>
+        </div>
+        @Html.PagedListPager(Model.SearchResults,
+           page => Url.Action("InPark", new RouteValueDictionary()
+           {
+               { "Page", page },
+               { "Model", Model.Model },
+               { "Manufacturer", Model.Manufacturer },
+               { "DailyCost", Model.DailyCost },
+               { "DelayCost", Model.DelayCost },
+               { "Geer", Model.Geer },
+               { "YearManufacture", Model.YearManufacture },
+               {"FreeText",Model.FreeText}
+           }),
+           PagedListRenderOptions.PageNumbersOnly)
+    }
+    else
+    {
+        <div class="row">
+            <h2 class="text-center">No results were found.</h2>
+        </div>
+    }
+</div>

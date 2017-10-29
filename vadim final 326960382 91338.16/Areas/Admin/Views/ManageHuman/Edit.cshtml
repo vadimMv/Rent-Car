@@ -1,0 +1,87 @@
+﻿
+                            @*user editional form defenition*@ 
+@model BL.UserEditModel
+            @*Page title*@
+@{
+    ViewBag.Title = "Admin";
+    Layout = "/Views/Shared/_Layout.cshtml";
+
+}
+            @*items list for drop down list*@ 
+@{
+    List<SelectListItem> listItemsSex = new List<SelectListItem>();
+    listItemsSex.Add(new SelectListItem
+    {
+        Text = "Men",
+        Value = "Men",
+    });
+    listItemsSex.Add(new SelectListItem
+    {
+        Text = "Women",
+        Value = "Women",
+
+    });
+    DateTime? modelDate = (Model.BirthDate == null) ? (DateTime?)null : Model.BirthDate.Value.Date;
+}
+               @*form code*@
+<div class="container">
+    <div class="register-form">
+        @using (Html.BeginForm("Edit", "ManageHuman", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="register-form-header">
+                <h3 class="text-center">Editing</h3>
+            </div>
+            <div class="register-form-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <h4><span class="label label-default">Email</span></h4>
+                    @Html.TextBoxFor(u => u.Email, new { @class = "form-control", placeholder = "Email" })
+                    @Html.ValidationMessageFor(u => u.Email, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <h4><span class="label label-default">Full Name</span></h4>
+                    @Html.TextBoxFor(u => u.FullName, new { @class = "form-control", placeholder = "Full Name" })
+                    @Html.ValidationMessageFor(u => u.FullName, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.DropDownListFor(user => user.Sex, listItemsSex, "Sex", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(u => u.Sex, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group finish-calendar">
+                    <h4><span class="label label-default">Birthday</span></h4>
+                    <div class='input-group date'>
+                        <input type='text' class="form-control " name="BirthDate" value="@modelDate" autocomplete="off" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <h4><span class="label label-default">Image</span></h4>
+                    <input type="file" name="upload" class="btn btn-block" />
+                </div>
+                <div class="form-group">
+                    <h4><span class="label label-default">Password</span></h4>
+                    <input type='password' class="form-control " name="Password" value="@Model.Password" readonly="readonly" />
+                </div>
+                <div class="form-group">
+                    <h4><span class="label label-default">Id Number</span></h4>
+                    <input type='text' class="form-control" name="IdNumber" value="@Model.IdNumber" readonly="readonly" />
+                </div>
+                <div class="form-group">
+                    <h4><span class="label label-default">Role</span></h4>
+                    <input type='text' class="form-control" name="Role" value="@Model.Role" readonly="readonly" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Update" class="btn btn-block" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+        @*validations scripts*@
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

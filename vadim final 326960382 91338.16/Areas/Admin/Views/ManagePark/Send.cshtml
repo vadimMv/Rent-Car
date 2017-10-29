@@ -1,0 +1,59 @@
+﻿@model DAL.Car
+@{
+    ViewBag.Title = "New car"; //title
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+ @*new car data form*@
+<div class="container">
+    <div class="register-form">
+        @using (Html.BeginForm("Send", "ManagePark", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="register-form-header">
+                <h3 class="text-center">Send to Branch</h3>
+            </div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="register-form-body">
+                <div class="form-group">
+                    <h4><span class="label label-default">Model</span></h4>
+                    @Html.DropDownListFor(u => u.CarModel, (SelectList)ViewBag.type, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(u => u.CarModel, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <h4><span class="label label-default">Number</span></h4>
+                    @Html.TextBoxFor(u => u.CarNumber, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(u => u.CarNumber, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <h4><span class="label label-default">Current Distance</span></h4>
+                    @Html.TextBoxFor(u => u.CurrentDistance, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(u => u.CurrentDistance, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <h4><span class="label label-default">Branch</span></h4>
+                    @Html.DropDownListFor(u => u.Branch, (SelectList)ViewBag.branches, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(u => u.Branch, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <h4><span class="label label-default">Proper for Rent</span></h4>
+                    @Html.CheckBoxFor(u => u.ProperForRent, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <h4><span class="label label-default">Free for Rent</span></h4>
+                    @Html.CheckBoxFor(u => u.FreeForRent, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <h4><span class="label label-default">Image</span></h4>
+                        <input type="file" id="Avatar" name="upload" />
+                    </div>
+                </div>
+                <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+        }
+    </div>
+</div>
+  @*adding validation scripts*@
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

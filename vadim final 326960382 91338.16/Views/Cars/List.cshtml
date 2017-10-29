@@ -1,0 +1,241 @@
+﻿@model BL.SearchCarsModel
+@using PagedList.Mvc;
+@{
+    //title
+    ViewBag.Title = "Cars";
+}
+@{
+    //dropdown geers type list
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "Manual",
+        Value = "Manual"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Automat",
+        Value = "Automat",
+        Selected = true
+    });
+
+}
+  @*cars search fields*@ 
+<div class="container">
+    @using (Html.BeginForm("List", "Cars", FormMethod.Get))
+    {      
+        <div class="row">
+            <div class="col-md-2">
+                <h4>
+                    <span class="label label-primary">Manufacturer</span>
+                </h4>
+                <div class="form-group">
+                    @*@Html.TextBoxFor(model => model.Manufacturer, new { @class = "form-control", placeholder = "Manufacturer" })*@
+                    @Html.DropDownListFor(model => model.Manufacturer, (SelectList)ViewBag.type, "", new { @class = "form-control", placeholder = "Manufacturer" })
+                    @Html.ValidationMessageFor(model => model.Manufacturer)
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h4>
+                    <span class="label label-primary">Model</span>
+                </h4>
+                <div class="form-group">
+                    @*@Html.TextBoxFor(model => model.Model, new { @class = "form-control", placeholder = "Model" })*@
+                    @*@Html.DropDownListFor(model => model.Model, (SelectList)ViewBag.model," ", new { @class = "form-control" , placeholder = "Model" })
+                        @Html.ValidationMessageFor(model => model.Model)*@
+                    <select id="Model" name="Model" class="form-control">
+                        <option value=""> </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h4>
+                    <span class="label label-primary">Geer</span>
+                </h4>
+                <div class="form-group input-group-sm">
+                    @Html.DropDownListFor(u => u.Geer, listItems, "All", new { @class = "form-control", placeholder = "Geer" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h4>
+                    <span class="label label-primary">Year Manufacture</span>
+                </h4>
+                <div class="form-group ">
+                    <div class='input-group date'>
+                        <input type='text' class="form-control " name="YearManufacture" autocomplete="off" placeholder="@DateTime.Now" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <h4>
+                    <span class="label label-primary">Daily</span>
+                </h4>
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.DailyCost, new { @class = "form-control", placeholder = "Price" })
+                    @*@Html.ValidationMessageFor(model => model.DailyCost)*@
+                </div>
+            </div>
+            <div class="col-md-1">
+                <h4>
+                    <span class="label label-primary">Delay</span>
+                </h4>
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.DelayCost, new { @class = "form-control" , placeholder = "Price" })
+                    @*@Html.ValidationMessageFor(model => model.DelayCost)*@
+                </div>
+            </div>
+            <div class="col-md-2">
+                <input name="SearchButton" type="submit" value="Search" class="btn btn-primary " />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10">
+                @*<h4>
+                    <span class="label label-primary">Search by free text</span>
+                </h4>*@
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.FreeText, new { @class = "form-control", placeholder = "Search by free text" })
+                    @Html.ValidationMessageFor(model => model.FreeText)
+                </div>
+            </div>
+        </div>
+    }
+    @Html.ValidationSummary(false)
+    @*results table*@
+    @if (Model.SearchResults != null && Model.SearchResults.Count > 0)
+    {
+        <div class="row">
+            <table class="table table-striped">
+                <tr>
+                    <th>Manufacturer</th>
+                    <th>Model</th>
+                    <th>DailyCost</th>
+                    <th>DelayCost</th>
+                    <th>Geer</th>
+                    <th>Year</th>
+                    <th>Order</th>
+                    <th>Price</th>
+                </tr>
+                @foreach (var car in Model.SearchResults)
+                {
+                    <tr>
+                        <td>@car.Manufacturer</td>
+                        <td>@car.Model</td>
+                        <td>@car.DailyCost</td>
+                        <td>@car.DelayCost</td>
+                        <td>@car.Geer</td>
+                        <td>@car.YearManufacture.Year</td>
+                        <td>
+                            <a data-toggle="modal" data-id="@car.id" data-content="@car.Model"
+                               class="open-OrderDialog btn" href="#addOrderDialog"></a>
+                        </td>
+                        <td><a data-toggle="modal" data-id="@car.Model" class="open-AddBookDialog btn btn-primary " href="#addBookDialog">Price</a></td>
+                    </tr>
+                }
+            </table>
+        </div>
+        @Html.PagedListPager(Model.SearchResults,
+           page => Url.Action("List", new RouteValueDictionary()
+           {
+               { "Page", page },
+               { "Model", Model.Model },
+               { "Manufacturer", Model.Manufacturer },
+               { "DailyCost", Model.DailyCost },
+               { "DelayCost", Model.DelayCost },
+               { "Geer", Model.Geer },
+               { "YearManufacture", Model.YearManufacture },
+               {"FreeText",Model.FreeText}
+           }),
+           PagedListRenderOptions.PageNumbersOnly)
+    }
+    else
+    {
+        <div class="row">
+            <h2 class="text-center">No results were found.</h2>
+        </div>
+    }
+
+</div>
+    @*last viewed cars table*@
+<div class="container">
+    <div class="row">
+        <h2 class="text-center ld">Last viewed</h2>
+        <div class="container">
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <th>Manufacturer</th>
+                    <th>Model</th>
+                    <th>DailyCost</th>
+                    <th>DelayCost</th>
+                    <th>Geer</th>
+                    <th>YearManufacture</th>
+                </tr>
+            </table>
+        </div>
+        <div id="emptyTable">
+            <div class="alert alert-info alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                <strong>Sorry!</strong> Recent views are not saved.
+            </div>
+        </div>
+    </div>
+</div>
+    @*check price view*@ 
+<div class="modal fade" id="addBookDialog" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title text-center" id="memberModalLabel">Rent price calculation.</h4>
+
+            </div>
+            <div class="modal-body">
+                <p>
+                    Dear @User.Identity.Name please check days you want to rent, and we calculate price for you!!!!!
+
+                </p>
+                <label for="sel1">Select days for checking price:</label>
+                <select class="form-control" id="list"></select>
+                <input type="text" name="model" id="model" class="form-control model-name" readonly value="" />
+                <div id="privew">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    @*order view*@ 
+<div class="modal fade" id="addOrderDialog" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="memberModalLabel">Check in Branches.</h4>
+            </div>
+            <div class="modal-body">
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                        Select Branch
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" id="options"></ul>
+                </div>
+                <div id="area">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

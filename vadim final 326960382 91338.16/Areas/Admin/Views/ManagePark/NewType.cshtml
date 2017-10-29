@@ -1,0 +1,88 @@
+﻿@model DAL.CarType
+@{
+    ViewBag.Title = "Admin";    //  title
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+   @*dropdown box list*@
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "Manual",
+        Value = "Manual"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Automat",
+        Value = "Automat",
+        Selected = true
+    });
+
+}
+@if (ViewBag.error != null)
+{
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="alert alert-success alert-dismissable fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> @ViewBag.error
+            </div>
+        </div>
+    </div>
+}
+@*new type add form*@
+<div class="container">
+    <div class="register-form">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="register-form-header">
+                <h3 class="text-center">New</h3>
+            </div>
+            <div class="register-form-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <h4><span class="label label-default">Manufacturer</span></h4>
+                    @Html.TextBoxFor(u => u.Manufacturer, new { @class = "form-control"})
+                    @Html.ValidationMessageFor(u => u.Manufacturer, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <h4><span class="label label-default">Model</span></h4>
+                    @Html.TextBoxFor(u => u.Model, new { @class = "form-control"})
+                    @Html.ValidationMessageFor(u => u.Model, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <h4><span class="label label-default">Daily Cost</span></h4>
+                    @Html.TextBoxFor(u => u.DailyCost, new { @class = "form-control"})
+                    @Html.ValidationMessageFor(u => u.DailyCost, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <h4><span class="label label-default">Delay Cost</span></h4>
+                    @Html.TextBoxFor(u => u.DelayCost, new { @class = "form-control"})
+                    @Html.ValidationMessageFor(u => u.DelayCost, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group ">
+                    <h4><span class="label label-default">Year</span></h4>
+                    <div class='input-group date'>
+                        <input type='text' class="form-control " name="YearManufacture" autocomplete="off" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    @Html.ValidationMessageFor(u => u.YearManufacture, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <h4><span class="label label-default">Manufacturer</span></h4>
+                    @Html.DropDownListFor(u => u.Geer, listItems, new { @class = "form-control" })
+                </div>
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        }
+    </div>
+</div>
+ @*validation scripts*@
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

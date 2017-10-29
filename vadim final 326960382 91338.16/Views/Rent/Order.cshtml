@@ -1,0 +1,59 @@
+﻿@model BL.OrderRentModel
+
+@{
+    ViewBag.Title = "Order";    //title
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+@*messeges place*@
+<div class="container notify">
+    <div id="notify_wrapp">
+
+    </div>
+</div>
+    @*order form*@
+<div class="container rent-section">
+    @using (Html.BeginForm("Order", "Rent", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="col-md-offset-2 col-md-8">
+            <h3 class="text-center">You Order</h3>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <input type="hidden" name="user" value=@Model.user.IdNumber>
+            <input type="hidden" name="car" value=@Model.cars.First().CarNumber>
+            <input type="hidden" name="model" value=@Model.cars.First().CarModel>
+            <div class="form-group">
+                <div class="well well-sm">You car:   @Model.cars.First().CarModel</div>
+            </div>
+            <div class="form-group">
+                <div class="well well-sm">Current distance in km:   @Model.cars.First().CurrentDistance</div>
+            </div>
+            <div class="form-group">
+                <div class="well well-sm"> Location:  @Model.cars.First().Branch</div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4 col-md-offset-2">
+                    <div class="well well-sm">Pick-up Date</div>
+                    <div class='input-group date'>
+                        <input type='text' class="form-control order-d" name="start" autocomplete="off" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <div class="well well-sm">Drop-off Date:</div>
+                    <div class='input-group date'>
+                        <input type='text' class="form-control order-d" name="finish" autocomplete="off" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="process">
+                <input type="submit" value="Order" class="btn btn-default order-r" />
+            </div>
+        </div>
+    }
+</div>

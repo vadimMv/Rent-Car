@@ -1,0 +1,42 @@
+﻿@model DAL.User
+
+@{
+    ViewBag.Title = "Login"; //title
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+    @*login form*@
+<div class="container">
+    <section id="loginForm">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="login-form-header">
+                <h3 class="text-center">Login</h3>
+            </div>
+            <div class="login-form-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.PasswordFor(u => u.Password, new { @class = "form-control", placeholder = "Password" })
+                    @Html.ValidationMessageFor(u => u.Password, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.TextBoxFor(u => u.FullName, new { @class = "form-control", placeholder = "Full Name" })
+                    @Html.ValidationMessageFor(u => u.FullName,"", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Login" class="btn btn-block" />
+                </div>
+                <p>
+                    @Html.ActionLink("Register as a new user", "Create")
+                </p>
+            </div>
+        }
+    </section>
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

@@ -1,0 +1,105 @@
+﻿@model IEnumerable<DAL.Car>
+@using BL;
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Staff"; //title
+}
+ @*Search car*@ 
+<div class="container">
+    <div class="row inner-s">
+        @using (Html.BeginForm("Index", "Worker", FormMethod.Get))
+        {
+            @Html.ValidationSummary(false)
+            <div class="col-lg-8 col-lg-offset-2">
+                <h4><span class="label label-default">Search field</span></h4>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="CarNum" placeholder="Car number...">
+                    <span class="input-group-btn">
+                        <button class="btn return-search-b" type="submit">Search</button>
+                    </span>
+                </div>
+            </div>
+        }
+    </div>
+    @*messages from site*@
+    <div id="msgs"></div>
+    <div id="msgs1"></div>
+</div>
+<div class="container">
+    <div class="inner-c">
+        @if (ViewBag.validation == "Input no valid")
+        {
+            <div class="row">
+                <div class="alert alert-warning alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Warning!</strong> Better check yourself, @ViewBag.validation.
+                </div>
+            </div>
+        }
+        @if (Model.Count() == 0)
+        {
+            <div class="row">
+                <div class="alert alert-info" role="alert" style="margin-top:15px">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>System Message. </strong> Currently not found active rents!!!
+                </div>
+            </div>
+        }
+        else
+        {
+            //Result table
+            <div class="row">
+                <table class="table-striped table table-striped">
+                    <tr>
+                        <th><h4><span class="label label-default">Photo</span></h4></th>
+                        <th><h4><span class="label label-default">Model</span></h4></th>
+                        <th><h4><span class="label label-default">Mileage</span></h4></th>
+                        <th><h4><span class="label label-default">Car Number</span></h4></th>
+                        <th><h4><span class="label label-default">Branch</span></h4></th>
+                        <th><h4><span class="label label-default">Return</span></h4></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                {
+                    var imgSrc = "";
+                    if (item.Image != null)
+                    {
+                        var base64 = Convert.ToBase64String(item.Image);
+                        imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                    }
+                    else
+                    {
+                        string path = Server.MapPath("~/Images/Logos/noPhoto.jpg");
+                        imgSrc = Util<string, string>.base64Img(path);
+                        imgSrc = String.Format("data:image/gif;base64,{0}", imgSrc);
+                    }
+                    <tr class="row-items">
+                        <td><img src="@imgSrc" width="60" height="50" alt="No Image"></td>
+                        <td>@item.CarModel</td>
+                        <td>
+                            <input type="text" class="form-control " name="distance" value="@item.CurrentDistance">
+                            <label class="checkbox-inline d-update"><input type="checkbox" class="update-box">Update</label>
+                        </td>
+                        <td><input type="text" class="form-control" readonly value="@item.CarNumber"></td>
+                        <td>@item.Branch</td>
+                        <td>
+                            <button type="button" class="btn btn-warning  remove" onclick="ReturnCar(@item.CarNumber);">Return</button>
+                        </td>
+                    </tr>
+                    }
+
+                </table>
+            </div>
+        }
+           @*messages*@
+        @if (Model.Count(m=>m.FreeForRent==false) >= 6)
+        {
+            <div class="row">
+                <div id="buttom-mes"></div>
+            </div>
+            <div class="row">
+                <div id="buttom-mes1"></div>
+            </div>
+        }
+    </div>
+</div>

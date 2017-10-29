@@ -1,0 +1,107 @@
+﻿@model DAL.User
+
+@{
+    ViewBag.Title = "Registration";
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    // roles dropdown list
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "Admin",
+        Value = "Admin"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "User",
+        Value = "User",
+        Selected = true
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Staff",
+        Value = "Staff"
+    });
+    // sex dropdown list
+    List<SelectListItem> listItemsSex = new List<SelectListItem>();
+    listItemsSex.Add(new SelectListItem
+    {
+        Text = "Men",
+        Value = "Men",
+        Selected = true
+    });
+    listItemsSex.Add(new SelectListItem
+    {
+        Text = "Women",
+        Value = "Women",
+
+    });
+
+}
+    @*registration form*@
+<div class="container">
+    <div class="register-form">
+        @using (Html.BeginForm("Create", "User", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="register-form-header">
+                <h3 class="text-center">Registration</h3>
+            </div>
+            <div class="register-form-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                <div class="form-group">
+                    @Html.TextBoxFor(u => u.Email, new { @class = "form-control", placeholder = "Email" })
+                    @Html.ValidationMessageFor(u => u.Email,"", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.PasswordFor(u => u.Password, new { @class = "form-control", placeholder = "Password" })
+                    @Html.ValidationMessageFor(u => u.Password, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.TextBoxFor(u => u.IdNumber, new { @class = "form-control", placeholder = "ID Number" })
+                    @Html.ValidationMessageFor(u => u.IdNumber, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.TextBoxFor(u => u.FullName, new { @class = "form-control", placeholder = "Full Name" })
+                    @Html.ValidationMessageFor(u => u.FullName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.DropDownListFor(user => user.Sex, listItemsSex, "Sex", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(u => u.Sex, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group finish-calendar">
+                    <label for="usr">birth date:</label>
+                    <div class='input-group date'>
+                        <input type='text' class="form-control " name="birthday" autocomplete="off" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group input-group-sm">
+                    @Html.DropDownListFor(user => user.Role, listItems, "-- Select Role --", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.Label("Image", new { @class = "control-label"})
+                    <input type="file" name="upload"  class="btn btn-block" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create"  class="btn btn-block"/>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

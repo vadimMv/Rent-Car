@@ -1,0 +1,33 @@
+﻿
+@if (Request.IsAuthenticated && User.IsInRole("User"))
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Logoff", "Logoff", "User", routeValues: new { area = "" }, htmlAttributes: new { @class = "navbar-button" })</li>
+        <li data-toggle="tooltip" data-placement="bottom" title="@User.Identity.Name&nbsp;Click me:)))))))))"><a class="navbar-button account" data-toggle="popover"   data-img="//placehold.it/200x200">@User.Identity.Name</a></li>
+    </ul>
+    <input type="hidden" name="user" value="@User.Identity.Name" />
+}
+else if (Request.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Logoff", "Logoff", "User", routeValues: new { area = "" }, htmlAttributes: new { @class = "navbar-button" })</li>
+        <li data-toggle="tooltip" data-placement="bottom" title="@User.Identity.Name&nbsp;Click me:))))))))) "><a class="navbar-button account" data-toggle="popover" data-img="//placehold.it/200x200">@User.Identity.Name</a></li>
+    </ul>
+    <input type="hidden" name="user" value="@User.Identity.Name" />
+}
+else if (Request.IsAuthenticated && User.IsInRole("Staff"))
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Logoff", "Logoff", "User", routeValues: new { area = "" }, htmlAttributes: new { @class = "navbar-button" })</li>
+        <li data-toggle="tooltip" data-placement="bottom" title="@User.Identity.Name&nbsp;
+            Click me:))))))))) "><a class="navbar-button account" data-toggle="popover" data-img="//placehold.it/200x200">@User.Identity.Name</a></li>
+    </ul>
+    <input type="hidden" name="user" value="@User.Identity.Name" />
+}
+else
+{
+<ul class="nav navbar-nav navbar-right">
+    <li>@Html.ActionLink("Register", "Create", "User", routeValues: new { area = "" }, htmlAttributes: new { @class = "navbar-button" })</li>
+    <li>@Html.ActionLink("Login", "Login", "User", routeValues: new { area = "" }, htmlAttributes: new { @class = "navbar-button" })</li>
+</ul>
+}

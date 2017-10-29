@@ -1,0 +1,36 @@
+﻿
+@if ((Request.IsAuthenticated && User.IsInRole("User")))
+{
+    <ul class="nav navbar-nav navbar-pages">
+        <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
+        <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, null)</li>
+        <li>@Html.ActionLink("Cars", "List", "Cars", new { area = "" }, null)</li>
+        <li>@Html.ActionLink("My Rents", "List", "Rent", new { area = "" }, null)</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, null)</li>
+    </ul>
+}
+ else if (!Request.IsAuthenticated)
+{
+    <ul class="nav navbar-nav navbar-pages">
+        <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
+        <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, null)</li>
+        <li>@Html.ActionLink("Cars", "List", "Cars", new { area = "" }, null)</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, null)</li>
+    </ul>
+}
+else if (Request.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <ul class="nav navbar-nav navbar-pages">
+        <li>@Html.ActionLink("Humans", "Index", "ManageHuman", new { area = "Admin" }, null)</li>
+        <li>@Html.ActionLink("Cars", "InPark", "ManagePark", new { area = "Admin" }, null)</li>
+        <li>@Html.ActionLink("Rent", "Index", "ManageRent", new { area = "Admin" },null)</li>
+    </ul>
+}
+else if (Request.IsAuthenticated && User.IsInRole("Staff"))
+{
+    @*<ul class="nav navbar-nav navbar-pages">
+        <li>@Html.ActionLink("Humans", "Index", "Staff", new { area = "Staff" }, null)</li>
+        <li>@Html.ActionLink("Cars", "List", "Staff", new { area = "Staff" }, null)</li>
+        <li>@Html.ActionLink("Rent", "Rent", "Staff", new { area = "Staff" }, null)</li>
+    </ul>*@
+}

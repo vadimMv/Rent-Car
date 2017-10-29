@@ -1,0 +1,114 @@
+﻿@model List<DAL.CarsRent>
+
+@{
+    ViewBag.Title = "Admin";  //title
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+@{
+    int indexTable = 0;  //table counter
+}
+ @*search rent form*@
+<div class="container">
+    <div class="row inner-s">
+        @using (Html.BeginForm("Index", "ManageRent", FormMethod.Post))
+        {
+            @Html.ValidationSummary(false)
+            <div class="col-lg-8 col-lg-offset-2">
+                <h4><span class="label label-default">Search field</span></h4>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="IdOrNum" placeholder="Enter user Id Or car number...">
+                    <span class="input-group-btn">
+                        <button class="btn return-search-b" type="submit">Search</button>
+                    </span>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@if (TempData["RentDel"] != null)
+{
+    <div class="container">
+        <div class="row">
+            <div class="alert alert-warning alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                <strong>System message</strong> @TempData["RentDel"].
+            </div>
+        </div>
+    </div>
+}
+   @*rents table*@
+<div class="container">
+    <div class="row inner-c">
+        <table class="table table-hover table-bordered table-striped">
+            <tr>
+                <th><span class="label label-default">#</span></th>
+                <th><span class="label label-default">Id User</span></th>
+                <th><span class="label label-default">Id Car</span></th>
+                <th><span class="label label-default">Delete</span>  |   <span class="label label-default">Details</span></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <td>@(++indexTable)</td>
+                    <td>@item.NumUser</td>
+                    <td>@item.NumCar</td>
+                    <td>
+                        @Html.ActionLink("Delete", "Delete", new { id = item.id })   |
+                        <a data-toggle="modal" data-id="@item.id" data-u="@item.NumUser" data-c="@item.NumCar" data-s="@item.StartRent" data-f="@item.FinishRent" data-rf="@item.RealFinishRent" class="btn btn-link rent-i" href="#EditModal">Details</a>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+        @*rent information window*@
+<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="memberModalLabel">Rent Information.</h4>
+
+            </div>
+            <div class="modal-body">
+                <div id="msg"></div>
+                <div class="form-group">
+                    <label for="usr">User ID:</label>
+                    <input type="text" class="form-control editable" id="usr" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="car">Car ID:</label>
+                    <input type="text" class="form-control editable" id="car" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="str">Start:</label>
+                    <input type="text" class="form-control editable" id="str" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="fin">Finish:</label>
+                    <input type="text" class="form-control editable" id="fin" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="rfin">Real finish:</label>
+                    <input type="text" class="form-control editable" id="rfin" readonly>
+                </div>
+
+            </div>
+            <div class="form-group drop1">
+                <button type="button" class="btn btn-info ">Send</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

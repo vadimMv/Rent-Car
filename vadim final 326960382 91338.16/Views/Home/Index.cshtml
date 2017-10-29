@@ -1,0 +1,217 @@
+﻿@model IEnumerable<DAL.Car>
+@{
+    ViewBag.Title = "Home"; //title
+}
+<!-- Jumbotron with Carousel-->
+<div id="carousel-cars" class="carousel slide" data-ride="carousel">
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+        <div class="item bg bg1 active">
+            <div class="container">
+                <div class="carousel-caption">
+                    <h4>Get only best for you!</h4>
+                    <p>Click below to see our offer.</p>
+                    @Html.ActionLink("All Opportunities", "List", "Cars", new { area = "" }, new { @class = "btn btn-primary" })
+                    <br />
+                </div>
+            </div>
+        </div>
+        <div class="item bg bg2">
+            <div class="container">
+                <div class="carousel-caption">
+                    <h4>Register today!</h4>
+                    <p>Get your car in two steps!</p>
+                    @Html.ActionLink("Register", "Create", "User", new { area = "" }, new { @class = "btn btn-primary" })
+                    <br />
+                </div>
+            </div>
+        </div>
+        <div class="item bg bg3">
+            <div class="carousel-caption">
+                <h4>Discover power!</h4>
+                <p>Our cars are one of the best on market...</p>
+            </div>
+        </div>
+    </div>
+    <!-- Controls -->
+    <a class="left carousel-control" href="#carousel-cars" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#carousel-cars" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+<!-- Offers -->
+<div class="offers-style">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-sm-12 col-md-4">
+                <div class="offer">
+                    <!--<img src="" alt="" />-->
+                    <div class="caption">
+                        <h4><strong>Options Herzel Branch</strong></h4>
+                        <p>
+                            <ul class="list-group">
+                                @foreach (var items in Model)
+                                {
+                                    if (items.Branch == "Herzel" && items.FreeForRent )
+                                    {
+                                        if (items.Image == null)
+                                        {
+                                            @:
+                                            <li class="list-group-item offer-options" data-toggle="popover" data-img="//placehold.it/200x200">
+                                                @Html.ActionLink(items.CarModel, "OrderByCar", "Rent", new { Id = items.id, branch= items.Branch }, new { @class = "rent-a" })</li>
+
+
+                                        }
+                                        else
+                                        {
+                                            var base64 = Convert.ToBase64String(items.Image);
+                                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                            @:
+                                            <li class="list-group-item offer-options" data-toggle="popover" data-img="@imgSrc">
+                                                @Html.ActionLink(items.CarModel, "OrderByCar", "Rent", new { Id = items.id, branch = items.Branch }, new { @class = "rent-a" })</li>
+                                        }
+
+                                    }
+                                }
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-4">
+                <div class="offer">
+                    <div class="caption">
+                        <h4><strong>Options Nesher Branch</strong></h4>
+                        <p>
+                            <ul class="list-group">
+                                @foreach (var items in Model)
+                                {
+                                    if (items.Branch == "Nesher" && items.FreeForRent)
+                                    {
+                                        if (items.Image == null)
+                                        {
+                                            @:
+                                            <li class="list-group-item offer-options" data-toggle="popover" data-img="//placehold.it/200x200">
+                                                @Html.ActionLink(items.CarModel, "OrderByCar", "Rent", new { Id = items.id, branch = items.Branch }, new { @class = "rent-a" })</li>
+                                        }
+                                        else
+                                        {
+                                            var base64 = Convert.ToBase64String(items.Image);
+                                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                            @:
+                                            <li class="list-group-item offer-options" data-toggle="popover" data-img="@imgSrc">
+                                                @Html.ActionLink(items.CarModel, "OrderByCar", "Rent", new { Id = items.id, branch = items.Branch }, new { @class = "rent-a" })</li>
+
+
+                                        }
+                                    }
+                                }
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-4">
+                <div class="offer">
+                    <div class="caption">
+                        <h4><strong>Options Jabotinsky Branch</strong></h4>
+                        <p>
+                            <ul class="list-group">
+                                @foreach (var items in Model)
+                                {
+                                    if (items.Branch == "Jabotinsky" && items.FreeForRent)
+                                    {
+                                        if (items.Image == null )
+                                        {
+                                            @:
+                                            <li class="list-group-item offer-options" data-toggle="popover" data-img="//placehold.it/200x200">
+                                                @Html.ActionLink(items.CarModel, "OrderByCar", "Rent", new { Id = items.id, branch = items.Branch }, new { @class = "rent-a" })</li>
+
+
+                                        }
+                                        else
+                                        {
+                                            var base64 = Convert.ToBase64String(items.Image);
+                                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                            @:
+                                            <li class="list-group-item offer-options" data-toggle="popover" data-img="@imgSrc">
+                                                @Html.ActionLink(items.CarModel, "OrderByCar", "Rent", new { Id = items.id, branch = items.Branch }, new { @class = "rent-a" })</li>
+
+
+                                        }
+
+                                    }
+                                }
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Brands -->
+<div class="brands-style">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-xs-6 col-sm-4 col-md-2">
+                <img src="~/Images/Brands/bmw-logo.png" class="brand-img" />
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-2">
+                <img src="~/Images/Brands/honda-logo.png" class="brand-img" />
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-2">
+                <img src="~/Images/Brands/hyundai-logo.png" class="brand-img" />
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-2">
+                <img src="~/Images/Brands/mercedes-logo.png" class="brand-img" />
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-2">
+                <img src="~/Images/Brands/nissan-logo.png" class="brand-img" />
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-2">
+                <img src="~/Images/Brands/toyota-logo.png" class="brand-img" />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- User's feedback -->
+<div class="feedback-style">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-4">
+                <blockquote>
+                    <p>
+                        I am a frequesnt visitor in Israel, and always rent cars with no issues what so ever,
+                        ususally through RentCar, which are just a pleasure to deal with.
+                    </p>
+                    <p><small>Ivica, Canada</small></p>
+                </blockquote>
+            </div>
+            <div class="col-sm-12 col-md-4">
+                <blockquote>
+                    <p>
+                        RentCar in Haifa is in the Cheque Post zone which is in the industrial part of the city
+                        - there are no neighborhoods nearby certainly not hotels.. sounds weird.
+                    </p>
+                    <p><small>John, UK</small></p>
+                </blockquote>
+            </div>
+            <div class="col-sm-12 col-md-4">
+                <blockquote>
+                    <p>
+                        Several months ago we had a similar complaint about the same agancy of RentCar.
+                        To me it looks genuine and Elad offer is generous.
+                        Send him a PM and see what he can do.
+                    </p>
+                    <p><small>Antonio, Italy</small></p>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>
+
