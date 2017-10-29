@@ -10,7 +10,7 @@ namespace vadim_final_326960382_91338._16.Controllers
         /// <summary>
         /// index page
         /// </summary>
-        /// <returns></returns>
+        /// <returns>index page with free cars</returns>
         // GET: Home
         public ActionResult Index()
         {
@@ -33,7 +33,7 @@ namespace vadim_final_326960382_91338._16.Controllers
         /// <summary>
         /// about page
         /// </summary>
-        /// <returns></returns>
+        /// <returns>about page</returns>
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -43,7 +43,7 @@ namespace vadim_final_326960382_91338._16.Controllers
         /// <summary>
         /// contact page
         /// </summary>
-        /// <returns></returns>
+        /// <returns>contact page</returns>
         public ActionResult Contact()
         {
             ViewBag.Message = "If you have any question, feel free to ask. <br> We will answer as soon as possible.";
