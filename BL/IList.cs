@@ -3,7 +3,7 @@
 namespace BL
 {
     /// <summary>
-    /// items search interface
+    /// items search interface 
     /// </summary>
     /// <typeparam name="T">instance ef-class</typeparam>
     public interface IList<T> where T : class
